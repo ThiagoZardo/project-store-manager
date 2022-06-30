@@ -8,11 +8,17 @@ const getAll = async () => {
 const findById = async (id) => {
   const product = await productsModel.findById(id);
   if (!product) return false;
-  console.log(product);
   return product;
 };
+
+const createProductService = async (name) => {
+  const product = await productsModel.createProductModel(name);
+  if (!product) return false;
+  return product;
+}
 
 module.exports = {
   getAll,
   findById,
+  createProductService,
 };
