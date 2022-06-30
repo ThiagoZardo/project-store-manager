@@ -69,7 +69,7 @@ describe('3. Verifica a função createProductService', () => {
   })
 
   after(async () => {
-    productsModel.createProductModel.restore
+    sinon.restore();
   });
 
   it('Quando é inserido com sucesso', async () => {
@@ -84,7 +84,7 @@ describe('3. Verifica a função createProductService', () => {
 });
 
 describe('4. Verifica retorno da função findById', () => {
-  const productsModelMock = { message: 'Product not found' }
+  const productsModelMock = false;
 
   before(async () => {
     sinon.stub(productsModel, 'findById').resolves(productsModelMock);
@@ -95,7 +95,24 @@ describe('4. Verifica retorno da função findById', () => {
   });
 
   it('Caso receba undefined, retorna false', async () => {
-    const response = await productsService.findById(5);
-    expect(response).to.be.equal(productsModelMock);
+    const response = await productsService.findById(1);
+    expect(response).to.equal(productsModelMock);
+  });
+});
+
+describe('5. Verifica retorno da função createProductService', () => {
+  const product = undefined;
+
+  before(async () => {
+    sinon.stub(productsModel, 'createProductModel').resolves(product);
+  });
+
+  after(async () => {
+    productsModel.createProductModel.restore();
+  });
+
+  it('Caso receba undefined, retorna false', async () => {
+    const response = await productsService.createProductService(product);
+    expect(response).to.equal(false);
   });
 });
