@@ -21,7 +21,7 @@ const createProductModel = async (name) => {
   };
 
   return newProduct;
-}
+};
 
 module.exports = {
   getAllProducts,

@@ -15,7 +15,7 @@ const createProductService = async (name) => {
   const product = await productsModel.createProductModel(name);
   if (!product) return false;
   return product;
-}
+};
 
 module.exports = {
   getAll,
