@@ -59,3 +59,28 @@ describe('2. Verifica retorno da função findById', () => {
     expect(response).to.be.not.empty;
   })
 });
+
+describe('3. Verifica a função createProductModel', () => {
+  const newProduct = {
+    name: 'Produto para testes'
+  };
+
+  before(async () => {
+    const execute = [{ insertId: 1 }]
+    sinon.stub(connection, 'execute').resolves(execute);
+  })
+
+  after(async () => {
+    connection.execute.restore
+  });
+
+  it('Quando é inserido com sucesso', async () => {
+    const response = await productsModel.createProductModel(newProduct);
+    expect(response).to.be.a('object');
+  });
+
+  it('O objeto possui o id correto', async () => {
+    const response = await productsModel.createProductModel(newProduct);
+    expect(response).to.have.a.property('id');
+  });
+});
