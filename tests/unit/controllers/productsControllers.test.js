@@ -53,7 +53,7 @@ describe('2. Verifica retorno da função findById', () => {
   });
 });
 
-describe('2. Verifica retorno da função findById', () => {
+describe('2. Verifica quando o retorno da função findById retorna false', () => {
   const request = {}
   const response = {};
   const returnProductService = false;
