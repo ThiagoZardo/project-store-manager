@@ -17,7 +17,6 @@ const registerSale = async () => {
 };
 
 const registerSaleProduct = async (saleProduct) => {
-  console.log(saleProduct);
   const registerSaleModel = await registerSale();
   saleProduct.map(async (el) => {
     await connection.execute(
