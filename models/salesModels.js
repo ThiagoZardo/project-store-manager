@@ -7,29 +7,28 @@ const checkProductExists = async (id) => {
   return verify;
 };
 
-const registerSaleProduct = async (saleProduct, registerSale) => {
-  const [newSale] = await connection.execute(
-    'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
-    [registerSale.insertId, saleProduct.productId, saleProduct.quantity],
-  );
-  const successfulSale = {
-    id: newSale.insertId,
-    itemsSold: [
-      {
-        productId: saleProduct.productId,
-        quantity: saleProduct.quantity,
-      },
-    ],
-  };
-  console.log(successfulSale);
-  return successfulSale;
-};
-
 const registerSale = async () => {
   const [newSale] = await connection.execute(
     'INSERT INTO StoreManager.sales (date) VALUES (NOW())',
   );
   return newSale;
+};
+
+const registerSaleProduct = async (saleProduct) => {
+  const registerSaleModel = await registerSale();
+  saleProduct.map(async (el) => {
+    await connection.execute(
+      'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+      [registerSaleModel.insertId, el.productId, el.quantity],
+    );
+  });
+  const successfulSale = {
+    id: registerSaleModel.insertId,
+    itemsSold: [
+        ...saleProduct,
+    ],
+  };
+  return successfulSale;
 };
 
 module.exports = {

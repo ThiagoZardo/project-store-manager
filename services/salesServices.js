@@ -11,9 +11,7 @@ const checkProductExists = async (sale) => {
 const registerSale = async (sale) => {
   const productExist = await checkProductExists(sale);
   if (productExist) return false;
-  const registerSaleModel = await saleModel.registerSale();
-  const newSale = await Promise.all(sale
-    .map((el) => saleModel.registerSaleProduct(el, registerSaleModel)));
+  const newSale = await saleModel.registerSaleProduct(sale);
   if (!newSale) return false;
   return newSale;
 };
