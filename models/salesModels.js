@@ -1,9 +1,11 @@
 const connection = require('./connection');
 
 const checkProductExists = async (id) => {
+  // console.log('Recebe', id);
   const [verify] = await connection.execute(
     'SELECT product_id FROM StoreManager.sales_products WHERE product_id=?', [id],
   );
+  // console.log('Retorna', verify);
   return verify;
 };
 
@@ -15,6 +17,7 @@ const registerSale = async () => {
 };
 
 const registerSaleProduct = async (saleProduct) => {
+  console.log(saleProduct);
   const registerSaleModel = await registerSale();
   saleProduct.map(async (el) => {
     await connection.execute(

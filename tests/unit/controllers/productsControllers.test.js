@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const productsService = require('../../../services/productsService');
 const productsController = require('../../../controllers/productsController');
 
-describe('1. Verifica retorno da função listProducts', () => {
+describe('1. Verifica retorno da função listProducts Controllers', () => {
   const response = {};
   const request = {};
 
@@ -30,7 +30,7 @@ describe('1. Verifica retorno da função listProducts', () => {
   });
 });
 
-describe('2. Verifica retorno da função findById', () => {
+describe('2. Verifica retorno da função findById Controllers', () => {
   const request = {}
   const response = {};
   const returnProductService = { id: 1, name: 'Martelo de Thor' }
@@ -53,7 +53,7 @@ describe('2. Verifica retorno da função findById', () => {
   });
 });
 
-describe('2. Verifica quando o retorno da função findById retorna false', () => {
+describe('3. Verifica quando o retorno da função findById retorna false Controllers', () => {
   const request = {}
   const response = {};
   const returnProductService = false;
@@ -76,7 +76,7 @@ describe('2. Verifica quando o retorno da função findById retorna false', () =
   });
 });
 
-describe('3. Verifica retorno da função createProduct', () => {
+describe('4. Verifica retorno da função createProduct Controllers', () => {
   const request = { body: { name: 'Martelo de Thor' } }
   const response = {};
   const returnProductService = { name: 'Martelo de Thor' }

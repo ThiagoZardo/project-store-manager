@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const productsModel = require('../../../models/productsModel');
 
-describe('1. Verifica retorno da função listProducts', () => {
+describe('5. Verifica retorno da função listProducts Models', () => {
   const productsModelMock = [
     {
       id: 1,
@@ -31,7 +31,7 @@ describe('1. Verifica retorno da função listProducts', () => {
   }); 
 });
 
-describe('2. Verifica retorno da função findById', () => {
+describe('6. Verifica retorno da função findById Models', () => {
   const productsModelMock = [
     [
       {
@@ -60,7 +60,7 @@ describe('2. Verifica retorno da função findById', () => {
   })
 });
 
-describe('3. Verifica a função createProductModel', () => {
+describe('7. Verifica a função createProductModel Models', () => {
   const newProduct = {
     name: 'Produto para testes'
   };
@@ -71,7 +71,7 @@ describe('3. Verifica a função createProductModel', () => {
   })
 
   after(async () => {
-    connection.execute.restore
+    connection.execute.restore();
   });
 
   it('Quando é inserido com sucesso', async () => {

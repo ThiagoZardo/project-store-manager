@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const productsService = require('../../../services/productsService');
 const productsModel = require('../../../models/productsModel');
 
-describe('1. Verifica retorno da função listProducts', () => {
+describe('11. Verifica retorno da função listProducts Services', () => {
   const productsModelMock = [
     {
       id: 1,
@@ -31,7 +31,7 @@ describe('1. Verifica retorno da função listProducts', () => {
   });
 });
 
-describe('2. Verifica retorno da função findById', () => {
+describe('12. Verifica retorno da função findById Services', () => {
   const productsModelMock = [
     {
       id: 1,
@@ -58,7 +58,7 @@ describe('2. Verifica retorno da função findById', () => {
   });
 });
 
-describe('3. Verifica a função createProductService', () => {
+describe('13. Verifica a função createProductService Services', () => {
   const newProduct = {
     name: 'Produto para testes'
   };
@@ -83,7 +83,7 @@ describe('3. Verifica a função createProductService', () => {
   });
 });
 
-describe('4. Verifica retorno da função findById', () => {
+describe('14. Verifica retorno da função findById Services', () => {
   const productsModelMock = false;
 
   before(async () => {
@@ -100,7 +100,7 @@ describe('4. Verifica retorno da função findById', () => {
   });
 });
 
-describe('5. Verifica retorno da função createProductService', () => {
+describe('15. Verifica retorno da função createProductService Services', () => {
   const product = undefined;
 
   before(async () => {
