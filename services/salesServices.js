@@ -1,4 +1,3 @@
-const { date } = require('joi');
 const salesModels = require('../models/salesModels');
 
 const checkProductExists = async (sale) => {
