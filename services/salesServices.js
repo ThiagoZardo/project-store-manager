@@ -1,3 +1,4 @@
+const { date } = require('joi');
 const salesModels = require('../models/salesModels');
 
 const checkProductExists = async (sale) => {
@@ -15,7 +16,36 @@ const registerSale = async (sale) => {
   return newSale;
 };
 
+const serialize = async (sales) => {
+  const saleCamelCase = sales.map((el) => ({
+    saleId: el.sale_id,
+    date: el.date,
+    productId: el.product_id,
+    quantity: el.quantity,
+  }));
+  return saleCamelCase;
+};
+
+const listAllSales = async () => {
+  const sales = await salesModels.listAllSales();
+  const objSale = await serialize(sales);
+  return objSale;
+};
+
+const findBySale = async (id) => {
+  const sale = await salesModels.findBySale(id);
+  if (sale.length === 0) return false;
+  const saleCamelCase = sale.map((el) => ({
+    date: el.date,
+    productId: el.product_id,
+    quantity: el.quantity,
+  }));
+  return saleCamelCase;
+};
+
 module.exports = {
   registerSale,
   checkProductExists,
+  listAllSales,
+  findBySale,
 };

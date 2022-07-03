@@ -31,8 +31,31 @@ const registerSaleProduct = async (saleProduct) => {
   return successfulSale;
 };
 
+const listAllSales = async () => {
+  const [sales] = await connection.execute(`
+  SELECT P.sale_id, S.date, P.product_id, P.quantity
+  FROM StoreManager.sales_products AS P
+  INNER JOIN StoreManager.sales AS S ON P.sale_id = S.id
+  ORDER BY S.id, P.product_id;
+  `);
+  return sales;
+};
+
+const findBySale = async (id) => {
+  const [sales] = await connection.execute(
+    `SELECT S.date, P.product_id, P.quantity
+    FROM StoreManager.sales_products AS P
+    INNER JOIN StoreManager.sales AS S ON P.sale_id = S.id
+    WHERE S.id=?
+    ORDER BY S.id, P.product_id`, [id],
+  );
+  return sales;
+};
+
 module.exports = {
   registerSaleProduct,
   registerSale,
   checkProductExists,
+  listAllSales,
+  findBySale,
 };
