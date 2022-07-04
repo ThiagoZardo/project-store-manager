@@ -47,4 +47,5 @@ module.exports = {
   checkProductExists,
   listAllSales,
   findBySale,
+  serialize,
 };

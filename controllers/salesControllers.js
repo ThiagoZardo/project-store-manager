@@ -7,14 +7,15 @@ const registerSale = async (req, res) => {
   return res.status(201).json(newSale);
 };
 
-const listAllSales = async (req, res) => {
+const listAllSales = async (_req, res) => {
   const sales = await salesService.listAllSales();
-  res.status(200).json(sales);
+  return res.status(200).json(sales);
 };
 
 const findBySale = async (req, res) => {
   const { id } = req.params;
   const sale = await salesService.findBySale(id);
+  console.log(sale);
   if (!sale) return res.status(404).json({ message: 'Sale not found' });
   return res.status(200).json(sale);
 };
