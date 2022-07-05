@@ -33,9 +33,19 @@ const productUpdate = async (productJSON) => {
   return newProduct.affectedRows;
 };
 
+const deleteProduct = async (id) => {
+  const [productDeleted] = await connection.execute(
+    `DELETE
+      FROM products
+        WHERE id=?`, [id],
+  );
+  return productDeleted.affectedRows;
+};
+
 module.exports = {
   getAllProducts,
   findById,
   createProductModel,
   productUpdate,
+  deleteProduct,
 };

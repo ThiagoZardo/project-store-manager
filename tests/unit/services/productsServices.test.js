@@ -139,3 +139,21 @@ describe('Verifica função productUpdate Services', () => {
     expect(response).to.be.deep.equal(obj);
   })
 });
+
+describe('Verivica funçlão deleteProduct Service', () => {
+  afterEach(async () => {
+    sinon.restore();
+  })
+
+  it('Retorna false quando produto não existe', async () => {
+    const response = await productsService.deleteProduct(999);
+    sinon.stub(productsModel, 'deleteProduct').resolves(false);
+    expect(response).to.be.equal(false);
+  });
+
+  it('Retorna true quando o produto é deletado', async () => {
+    const response = await productsService.deleteProduct(1);
+    sinon.stub(productsModel, 'deleteProduct').resolves(true);
+    expect(response).to.be.equal(true);
+  });
+});
