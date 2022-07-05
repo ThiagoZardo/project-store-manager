@@ -19,13 +19,13 @@ const createProductService = async (name) => {
 
 const productUpdate = async (id, name) => {
   const productJSON = { id: Number(id), name };
+  const newProduct = await productsModel.productUpdate(productJSON);
   const productNewUpdate = {
     id: productJSON.id,
     name: productJSON.name,
   };
-  const newProduct = await productsModel.productUpdate(productJSON);
-  if (!newProduct) return false;
-  if (newProduct > 0) return productNewUpdate;
+  if (newProduct <= 0) return false;
+  return productNewUpdate;
 };
 
 module.exports = {

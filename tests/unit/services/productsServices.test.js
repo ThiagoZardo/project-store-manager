@@ -116,3 +116,26 @@ describe('15. Verifica retorno da função createProductService Services', () =>
     expect(response).to.equal(false);
   });
 });
+
+describe('Verifica função productUpdate Services', () => {
+  const name = 'Machado do Thor Stormbreaker';
+  const obj = { id: 1, name: 'Machado do Thor Stormbreaker' }
+
+  afterEach(async () => {
+    sinon.restore();
+  })
+  
+  it('Retorna false quando o produto não esta cadastrado no banco', async () => {
+    const id = 999;
+    const response = await productsService.productUpdate(id, name);
+    sinon.stub(productsModel, 'productUpdate').resolves(0);
+    expect(response).to.be.equal(false);
+  })
+  
+  it('Retorna obj quando o produto esta cadastrado no banco', async () => {
+    sinon.stub(productsModel, 'productUpdate').resolves(1);
+    const id = 1;
+    const response = await productsService.productUpdate(id, name);
+    expect(response).to.be.deep.equal(obj);
+  })
+});

@@ -97,3 +97,46 @@ describe('4. Verifica retorno da função createProduct Controllers', () => {
     expect(response.status.calledWith(201)).to.equal(true);
   });
 });
+
+describe('Verifica função productUpdate Controllers', () => {
+  
+  const res = {};
+  
+  beforeEach(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.restore();
+  });
+  
+  it('Retorna status 404', async () => {
+    const req = { body: { name: 'Martelo de Thor' } }
+    req.params = { id: 999 }
+    sinon.stub(productsService, 'productUpdate').resolves(false);
+    await productsController.productUpdate(req, res);
+    expect(res.status.calledWith(404)).to.equal(true);
+  });
+
+  it('Retorna status 200 quando faz a atualização', async () => {
+    const req = { body: { name: 'Martelo de Thor' } }
+    req.params = { id: 999 }
+    sinon.stub(productsService, 'productUpdate')
+      .resolves({ id: 1, name: 'Machado do Thor Stormbreaker' });
+    await productsController.productUpdate(req, res);
+    expect(res.status.calledWith(200)).to.equal(true);
+  });
+
+  it('Retorna 422 quando não é passado name', async () => {
+    const req = { body: { name: 'Ma' } }
+    req.params = { id: 999 }
+    await productsController.productUpdate(req, res);
+    expect(res.status.calledWith(422)).to.equal(true);
+  });
+
+  it('Retorna 422 quando não é passado name', async () => {
+    const req = { body: {} }
+    req.params = { id: 999 }
+    await productsController.productUpdate(req, res);
+    expect(res.status.calledWith(400)).to.equal(true);
+  });
+
+});

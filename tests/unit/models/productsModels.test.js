@@ -84,3 +84,20 @@ describe('7. Verifica a função createProductModel Models', () => {
     expect(response).to.have.a.property('id');
   });
 });
+
+describe('Verifica função productUpdate Models', () => {
+  const newProduct = {
+    id: 1,
+    name: 'Machado do Thor Stormbreaker'
+  };
+
+  before(async () => {
+    sinon.stub(connection, 'execute').resolves(1);
+    sinon.restore();
+  })
+
+  it('Retorna a quantidade de linhas afetadas', async () => {
+    const response = await productsModel.productUpdate(newProduct);
+    expect(response).to.be.equal(1);
+  });
+})

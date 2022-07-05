@@ -1,4 +1,3 @@
-const { json } = require('express/lib/response');
 const productService = require('../services/productsService');
 
 const listProducts = async (req, res) => {

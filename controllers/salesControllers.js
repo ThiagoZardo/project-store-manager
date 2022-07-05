@@ -15,7 +15,6 @@ const listAllSales = async (_req, res) => {
 const findBySale = async (req, res) => {
   const { id } = req.params;
   const sale = await salesService.findBySale(id);
-  console.log(sale);
   if (!sale) return res.status(404).json({ message: 'Sale not found' });
   return res.status(200).json(sale);
 };
