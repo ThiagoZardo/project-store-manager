@@ -52,10 +52,20 @@ const findBySale = async (id) => {
   return sales;
 };
 
+const deleteSale = async (id) => {
+  const [saleDelected] = await connection.execute(
+    `DELETE
+      FROM sales
+        WHERE id=?`, [id],
+  );
+  return saleDelected.affectedRows;
+};
+
 module.exports = {
   registerSaleProduct,
   registerSale,
   checkProductExists,
   listAllSales,
   findBySale,
+  deleteSale,
 };

@@ -42,10 +42,17 @@ const findBySale = async (id) => {
   return saleCamelCase;
 };
 
+const deleteSale = async (id) => {
+  const saleDelected = await salesModels.deleteSale(id);
+  if (saleDelected <= 0) return false;
+  return true;
+};
+
 module.exports = {
   registerSale,
   checkProductExists,
   listAllSales,
   findBySale,
   serialize,
+  deleteSale,
 };
