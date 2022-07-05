@@ -140,28 +140,3 @@ describe('Verifica função productUpdate Controllers', () => {
   });
 
 });
-
-describe('Verifiva função deleteProduct Controler', () => {
-  const res = {};
-  const req = {};
-
-  beforeEach(async () => {
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-    sinon.restore();
-  });
-
-  it('Retorna 404 quando não o produto não é encontrado', async () => {
-    req.params = { id: 999 };
-    sinon.stub(productsService, 'deleteProduct').resolves(false);
-    await productsController.deleteProduct(req, res);
-    expect(res.status.calledWith(404));
-  });
-
-  it('Retorna 204 quando o produto é deletado', async () => {
-    req.params = { id: 1 };
-    sinon.stub(productsService, 'deleteProduct').resolves(true);
-    await productsController.deleteProduct(req, res);
-    expect(res.status.calledWith(204));
-  });
-})

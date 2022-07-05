@@ -92,23 +92,12 @@ describe('Verifica função productUpdate Models', () => {
   };
 
   before(async () => {
-    sinon.stub(connection, 'execute').resolves({
-      fieldCount: 0,
-      affectedRows: 1,
-      insertId: 0,
-      info: 'Rows matched: 1  Changed: 1  Warnings: 0',
-      serverStatus: 2,
-      warningStatus: 0,
-      changedRows: 1
-    });
-  })
-
-  after(async () => {
+    sinon.stub(connection, 'execute').resolves(1);
     sinon.restore();
-  });
+  })
 
   it('Retorna a quantidade de linhas afetadas', async () => {
     const response = await productsModel.productUpdate(newProduct);
-    expect(response).to.be.equal(newProduct.id);
+    expect(response).to.be.equal(1);
   });
 })
