@@ -35,7 +35,7 @@ describe('#14 GET SALES SERVICES', () => {
         product_id: 1,
         quantity: 5
       },
-    ]
+    ];
 
     const resolves = [
       {
@@ -44,7 +44,7 @@ describe('#14 GET SALES SERVICES', () => {
         productId: 1,
         quantity: 5
       },
-    ]
+    ];
 
     it('retorna chaves em formato camelCase', async () => {
       const response = await salesServices.serialize(sales);
@@ -99,11 +99,11 @@ describe('#14 GET SALES SERVICES', () => {
       },
     ]
 
-    before(async () => {
+    beforeEach(async () => {
       sinon.stub(salesModels, 'listAllSales').resolves(sales)
       sinon.stub(salesServices, 'serialize').resolves(resolves);
     })
-    after(async () => {
+    afterEach(async () => {
       sinon.restore();
     })
 
@@ -121,27 +121,30 @@ describe('#15 POST SALES SERVICES', () => {
     returnRegisterSaleProduct = {
       id: 3,
       itemsSold: [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }]
-    }
-
+    };
+   
     afterEach(async () => {
       sinon.restore();
-    });
-
+    })
+    
     it('Não permite cadastro de produtos que não existem', async () => {
       sinon.stub(salesServices, 'checkProductExists').resolves(true);
+      sinon.stub(salesModels, 'checkProductExists').resolves([]);
       const response = await salesServices.registerSale(receip);
       expect(response).to.equal(false);
     });
 
     it('Verifica se retorna o id do produto cadastrado', async () => {
       sinon.stub(salesServices, 'checkProductExists').resolves(false);
+      sinon.stub(salesModels, 'checkProductExists').resolves([sale]);
       sinon.stub(salesModels, 'registerSaleProduct').resolves(returnRegisterSaleProduct);
       const response = await salesServices.registerSale(sale);
-      expect(response).to.equal(returnRegisterSaleProduct);
+      expect(response).to.deep.equal(returnRegisterSaleProduct);
     });
 
     it('Verifica se retorna o id do produto cadastrado', async () => {
       sinon.stub(salesServices, 'checkProductExists').resolves(false);
+    sinon.stub(salesModels, 'checkProductExists').resolves([sale]);
       sinon.stub(salesModels, 'registerSaleProduct').resolves(false);
       const response = await salesServices.registerSale(sale);
       expect(response).to.equal(false);

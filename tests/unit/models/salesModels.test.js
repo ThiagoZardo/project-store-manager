@@ -5,26 +5,17 @@ const connection = require('../../../models/connection');
 const salesModel = require('../../../models/salesModels');
 
 describe('#9 GET SALES MODELS', () => {
-  describe('#checkProductExists Model', async () => {
-    const paramReceip = 1;
+  describe('#checkProductExists Model', () => {
     const returnFuncion = [{ product_id: 1 }];
-
-    before(async () => {
-      await sinon.stub(connection, 'execute').resolves(returnFuncion);
+    
+    beforeEach(async () => {
+      sinon.restore();
     });
-
-    after(async () => {
-      await connection.execute.restore();
-    });
-
-    it('O objeto não esta vazio', async () => {
-      const response = await salesModel.checkProductExists(paramReceip);
-      expect(response).to.be.not.empty;
-    });
-
+    
     it('Retorna um objeto', async () => {
-      const response = await salesModel.checkProductExists(paramReceip);
-      expect(response).to.be.an('object');
+      sinon.stub(connection, 'execute').resolves([returnFuncion]);
+      const response = await salesModel.checkProductExists(1);
+      expect(response).to.be.deep.equal(returnFuncion);
     });
   });
 
@@ -50,7 +41,7 @@ describe('#9 GET SALES MODELS', () => {
       }
     ]
 
-    after(async () => {
+    beforeEach(async () => {
       sinon.restore();
     })
 
@@ -70,15 +61,16 @@ describe('#9 GET SALES MODELS', () => {
       }
     ]
 
-    before(async () => {
-      sinon.stub(connection, 'execute').resolves([returnConnection]);
-    });
-
-    after(async () => {
+    beforeEach(async () => {
       sinon.restore();
     });
 
+    afterEach(async () => {
+      sinon.restore();
+    });
+        
     it('Verifica se retorna o elemento com o id esperado', async () => {
+      sinon.stub(connection, 'execute').resolves([returnConnection]);
       const reponse = await salesModel.findBySale(2);
       expect(reponse).to.be.equal(returnConnection);
     });

@@ -111,8 +111,8 @@ describe('#13 UPDATE PRODUCTS SERVICES', () => {
 
     it('Retorna false quando o produto não esta cadastrado no banco', async () => {
       const id = 999;
-      const response = await productsService.productUpdate(id, name);
       sinon.stub(productsModel, 'productUpdate').resolves(0);
+      const response = await productsService.productUpdate(id, name);
       expect(response).to.be.equal(false);
     })
 
