@@ -19,6 +19,13 @@ const findBySale = async (req, res) => {
   return res.status(200).json(sale);
 };
 
+const saleUpdate = async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+  const newSale = await salesService.saleUpdate(sale, id);
+  return res.status(newSale.code).json(newSale.message);
+};
+
 const deleteSale = async (req, res) => {
   const { id } = req.params;
   const saleDelected = await salesService.deleteSale(id);
@@ -30,5 +37,6 @@ module.exports = {
   registerSale,
   listAllSales,
   findBySale,
+  saleUpdate,
   deleteSale,
 };

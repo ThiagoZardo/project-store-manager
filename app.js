@@ -30,6 +30,9 @@ app.get('/sales', salesControler.listAllSales);
 app.get('/sales/:id', salesControler.findBySale);
 
 app.put('/products/:id', productsController.productUpdate);
+app.put('/sales/:id',
+  salesValidator.validProductID,
+  salesControler.saleUpdate);
 
 app.delete('/products/:id', productsController.deleteProduct);
 app.delete('/sales/:id', salesControler.deleteSale);

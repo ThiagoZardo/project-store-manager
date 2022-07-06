@@ -42,6 +42,27 @@ const findBySale = async (id) => {
   return saleCamelCase;
 };
 
+const saleUpdate = async (sale, id) => {
+  const productExist = await checkProductExists(sale);
+  if (productExist) {
+    return {
+      code: 404,
+      message: { message: 'Product not found' },
+    };
+  }
+  const newSale = await salesModels.saleUpdate(sale, id);
+  if (newSale === false) {
+    return {
+      code: 404,
+      message: { message: 'Sale not found' },
+    };
+  }
+  return {
+    code: 200,
+    message: newSale,
+  };
+};
+
 const deleteSale = async (id) => {
   const saleDelected = await salesModels.deleteSale(id);
   if (saleDelected <= 0) return false;
@@ -54,5 +75,6 @@ module.exports = {
   listAllSales,
   findBySale,
   serialize,
+  saleUpdate,
   deleteSale,
 };

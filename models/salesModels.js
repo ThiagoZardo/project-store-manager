@@ -52,6 +52,23 @@ const findBySale = async (id) => {
   return sales;
 };
 
+const saleUpdate = async (sale, id) => {
+  const [newSale] = await Promise.all(sale.map(async (el) => connection.execute(
+    `UPDATE sales_products 
+        SET quantity=?
+        WHERE sale_id=? AND product_id=?`,
+    [el.quantity, id, el.productId],
+)));
+  if (newSale[0].affectedRows === 0) return false;
+  const successfulSale = {
+    saleId: id,
+    itemsUpdated: [
+      ...sale,
+    ],
+  };
+  return successfulSale;
+};
+
 const deleteSale = async (id) => {
   const [saleDelected] = await connection.execute(
     `DELETE
@@ -67,5 +84,6 @@ module.exports = {
   checkProductExists,
   listAllSales,
   findBySale,
+  saleUpdate,
   deleteSale,
 };
