@@ -1,8 +1,6 @@
 const express = require('express');
-const productsController = require('./controllers/productsController');
-const salesControler = require('./controllers/salesControllers');
-const productValidator = require('./middlewares/productsMiddleware');
-const salesValidator = require('./middlewares/salesMiddlewares');
+const products = require('./routes/products');
+const sales = require('./routes/sales');
 
 const app = express();
 
@@ -13,30 +11,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', productsController.listProducts);
-app.get('/products/search', productsController.searchProduct);
-app.get('/products/:id', productsController.findById);
-
-app.post('/products',
-  productValidator.nameValidator,
-  productValidator.nameValidatorLength,
-  productsController.createProduct);
-
-app.post('/sales',
-  salesValidator.validProductSold,
-  salesValidator.validQuantitySold,
-  salesControler.registerSale);
-
-app.get('/sales', salesControler.listAllSales);
-app.get('/sales/:id', salesControler.findBySale);
-
-app.put('/products/:id', productsController.productUpdate);
-app.put('/sales/:id',
-  salesValidator.validProductID,
-  salesControler.saleUpdate);
-
-app.delete('/products/:id', productsController.deleteProduct);
-app.delete('/sales/:id', salesControler.deleteSale);
+app.use('/products', products);
+app.use('/sales', sales);
 
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
