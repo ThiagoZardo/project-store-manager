@@ -5,7 +5,7 @@ const productsService = require('../../../services/productsService');
 const productsController = require('../../../controllers/productsController');
 
 describe('#1 GET PRODUCTS CONTROLLERS', () => {
-  describe('#listProducts Controllers', () => {
+  describe('#listProducts', () => {
     const response = {};
     const request = {};
     
@@ -31,7 +31,7 @@ describe('#1 GET PRODUCTS CONTROLLERS', () => {
     });
   });
   
-  describe('#findById Controllers', () => {
+  describe('#findById', () => {
     const request = {}
     const response = {};
     const returnProductTrue = { id: 1, name: 'Martelo de Thor' }
@@ -41,7 +41,6 @@ describe('#1 GET PRODUCTS CONTROLLERS', () => {
     beforeEach(() => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
-      
     });
     
     afterEach(() => {
@@ -63,7 +62,7 @@ describe('#1 GET PRODUCTS CONTROLLERS', () => {
 });
 
 describe('#2 POST PRODUCTS CONTROLLERS', () => {
-  describe('#createProduct Controllers', () => {
+  describe('#createProduct', () => {
     const request = { body: { name: 'Martelo de Thor' } }
     const response = {};
     const returnProductService = { name: 'Martelo de Thor' }
@@ -87,7 +86,7 @@ describe('#2 POST PRODUCTS CONTROLLERS', () => {
 });
 
 describe('#3 UPDATE PRODUCTS CONTROLLERS', () => {
-  describe('#productUpdate Controllers', () => {
+  describe('#productUpdate', () => {
     const res = {};
 
     beforeEach(async () => {
@@ -127,4 +126,56 @@ describe('#3 UPDATE PRODUCTS CONTROLLERS', () => {
       expect(res.status.calledWith(400)).to.equal(true);
     });
   });
+});
+
+describe('#4 DELETE PRODUCTS', () => {
+  describe('#deleteProduct', () => {
+    const req = {}
+    const res = {};
+    req.params = { id: 1 }
+
+    beforeEach(() => {
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+    
+    it('Retorna 404 quando não encontra o produto', async () => {
+      sinon.stub(productsService, 'deleteProduct').resolves(true);
+      await productsController.deleteProduct(req, res);
+      expect(res.status.calledWith(204)).to.equal(true);
+    });
+
+    it('Retorna 404 quando não encontra o produto', async () => {
+      sinon.stub(productsService, 'deleteProduct').resolves(false);
+      await productsController.deleteProduct(req, res);
+      expect(res.status.calledWith(404)).to.equal(true);
+    });
+  });
+});
+
+describe('#5 GET/SEARCH PRODUCTS', () => {
+  describe('#searchProduct', () => {
+    const req = {}
+    const res = {};
+    req.query = { id: 1, name: 'Martelo' }
+
+    beforeEach(() => {
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+    });
+    
+    afterEach(() => {
+      sinon.restore();
+    });
+    
+    it('Retorna 200 quando o produto buscado é encontrado', async () => {
+      await sinon.stub(productsService, 'searchProduct').resolves(true);
+      await productsController.searchProduct(req, res);
+      expect(res.status.calledWith(200)).to.equal(true);
+    });
+  })
 });

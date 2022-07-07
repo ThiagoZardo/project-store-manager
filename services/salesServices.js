@@ -3,7 +3,6 @@ const salesModels = require('../models/salesModels');
 const checkProductExists = async (sale) => {
   const productExist = await Promise.all(sale
     .map((el) => salesModels.checkProductExists(el.productId)));
-  // console.log(productExist);
   const exist = productExist.some((el) => el.length === 0);
   return exist;
 };

@@ -5,8 +5,8 @@ const salesControlles = require('../../../controllers/salesControllers');
 const salesServices = require('../../../services/salesServices');
 const { listAllSales } = require('../../../models/salesModels');
 
-describe('#4 POST SALES CONTROLLERS', () => {
-  describe('#registerSale Controler', () => {
+describe('#6 POST SALES CONTROLLERS', () => {
+  describe('#registerSale', () => {
     const response = {};
     const request = {};
     const param = [{ productId: 9999, quantity: 1 }];
@@ -25,8 +25,8 @@ describe('#4 POST SALES CONTROLLERS', () => {
   });
 })
 
-describe('#5 GET SALES CONTROLLERS', () => {
-  describe('#findById Controllers', () => {
+describe('#7 GET SALES CONTROLLERS', () => {
+  describe('#findById', () => {
     const request = {}
     const response = {};
     const returnProductService = false;
@@ -44,7 +44,7 @@ describe('#5 GET SALES CONTROLLERS', () => {
     });
   });
 
-  describe('#listAllSales Controler', () => {
+  describe('#listAllSales', () => {
     const request = {}
     const response = {};
 
@@ -70,7 +70,7 @@ describe('#5 GET SALES CONTROLLERS', () => {
     });
   });
 
-  describe('#findBySale Controler', () => {
+  describe('#findBySale', () => {
     const req = {};
     const res = {};
     req.params = { id: 999 };
@@ -95,5 +95,54 @@ describe('#5 GET SALES CONTROLLERS', () => {
       await salesControlles.findBySale(req, res);
       expect(res.status.calledWith(200)).to.equal(true);
     });
+  });
+});
+
+describe('#8 UPDATE SALES CONTROLERS', () => {
+  describe('#saleUpdate', () => {
+    const res = {};
+
+    beforeEach(async () => {
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.restore();
+    });
+
+    it('Retorna status 404', async () => {
+      const req = { body: { name: 'Martelo de Thor' } }
+      req.params = { id: 999 }
+      sinon.stub(salesServices, 'saleUpdate').resolves(true);
+      await salesControlles.saleUpdate(req, res);
+      expect(res.status.calledWith(404)).to.equal(false);
+    });
+  });
+});
+
+describe('#9 DELETE SALES CONTROLLERS', () => {
+  describe('#deleteSale', async () => {
+    const req = {}
+    const res = {};
+    req.params = { id: 1 }
+
+    beforeEach(() => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it('Retorna 404 quando não encontra o produto', async () => {
+    sinon.stub(salesServices, 'deleteSale').resolves(true);
+    await salesControlles.deleteSale(req, res);
+    expect(res.status.calledWith(204)).to.equal(true);
+  });
+
+  it('Retorna 404 quando não encontra o produto', async () => {
+    sinon.stub(salesServices, 'deleteSale').resolves(false);
+    await salesControlles.deleteSale(req, res);
+    expect(res.status.calledWith(404)).to.equal(true);
+  });
   });
 });

@@ -58,7 +58,7 @@ const saleUpdate = async (sale, id) => {
         SET quantity=?
         WHERE sale_id=? AND product_id=?`,
     [el.quantity, id, el.productId],
-)));
+  )));
   if (newSale[0].affectedRows === 0) return false;
   const successfulSale = {
     saleId: id,

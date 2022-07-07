@@ -4,8 +4,8 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const salesModel = require('../../../models/salesModels');
 
-describe('#9 GET SALES MODELS', () => {
-  describe('#checkProductExists Model', () => {
+describe('#15 GET SALES MODELS', () => {
+  describe('#checkProductExists', () => {
     const returnFuncion = [{ product_id: 1 }];
     
     beforeEach(async () => {
@@ -19,7 +19,7 @@ describe('#9 GET SALES MODELS', () => {
     });
   });
 
-  describe('#listAllSales Model', () => {
+  describe('#listAllSales', () => {
     const returnConnection = [
       {
         sale_id: 1,
@@ -52,7 +52,7 @@ describe('#9 GET SALES MODELS', () => {
     });
   });
 
-  describe('Verifica a função findBySale', () => {
+  describe('#findBySale', () => {
     const returnConnection = [
       {
         date: '2022-07-04T16:16:42.000Z',
@@ -77,8 +77,8 @@ describe('#9 GET SALES MODELS', () => {
   });
 });
 
-describe('#10 POST SALES MODELS', () => {
-  describe('#registerSale Model', () => {
+describe('#16 POST SALES MODELS', () => {
+  describe('#registerSale', () => {
     const ResultSetHeader = [{
       fieldCount: 0,
       affectedRows: 1,
@@ -107,7 +107,7 @@ describe('#10 POST SALES MODELS', () => {
     });
   });
 
-  describe('#registerSaleProduct Model', () => {
+  describe('#registerSaleProduct', () => {
     const mockRegisterSale = [
       {
         id: 3,
@@ -141,4 +141,56 @@ describe('#10 POST SALES MODELS', () => {
       expect(response).to.include.all.keys('itemsSold');
     });
   });
+});
+
+describe('#17 UPDATE SALES MODELS', () => {
+  describe('#saleUpdate', () => {
+    const sale = [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }];
+    const obj = {
+      saleId: 1,
+      itemsUpdated: [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }]
+    }
+
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna false se não existe o id da venda no banco', async () => {
+      sinon.stub(connection, 'execute').resolves([
+        ResultSetHeader = {
+          affectedRows: 0,
+        },
+      ]);
+      const response = await salesModel.saleUpdate(sale, 999)
+      expect(response).to.be.equal(false);
+    });
+
+    it('Retorna o objeto que foi atualizado', async () => {
+      sinon.stub(connection, 'execute').resolves([
+        ResultSetHeader = {
+          affectedRows: 1,
+        },
+      ]);
+      const response = await salesModel.saleUpdate(sale, 1)
+      expect(response).to.be.deep.equal(obj);
+    });
+  });
+})
+
+describe('#18 DELETE SALES SALESMODELS', () => {
+  describe('#deleteSale', () => {
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna o número de linhas afetadas', async () => {
+      sinon.stub(connection, 'execute').resolves([
+        ResultSetHeader = {
+          affectedRows: 1,
+        }]
+      );
+      const response = await salesModel.deleteSale(1);
+      expect(response).to.be.deep.equal(1);
+    });
+  })
 });

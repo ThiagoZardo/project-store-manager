@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const salesServices = require('../../../services/salesServices');
 const salesModels = require('../../../models/salesModels');
 
-describe('#14 GET SALES SERVICES', () => {
+describe('#24 GET SALES SERVICES', () => {
   describe('#checkProductExists', () => {
     const productInvalid = [[]];
     const sale = [{ productId: 9999, quantity: 1 }];
@@ -80,7 +80,7 @@ describe('#14 GET SALES SERVICES', () => {
     });
   });
 
-  describe('#listAllSales Service', () => {
+  describe('#listAllSales', () => {
     const sales = [
       {
         sale_id: 1,
@@ -114,8 +114,8 @@ describe('#14 GET SALES SERVICES', () => {
   });
 });
 
-describe('#15 POST SALES SERVICES', () => {
-  describe('#registerSale salesService', () => {
+describe('#25 POST SALES SERVICES', () => {
+  describe('#registerSale', () => {
     receip = [{ productId: 9999, quantity: 1 }];
     const sale = [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }];
     returnRegisterSaleProduct = {
@@ -148,6 +148,79 @@ describe('#15 POST SALES SERVICES', () => {
       sinon.stub(salesModels, 'registerSaleProduct').resolves(false);
       const response = await salesServices.registerSale(sale);
       expect(response).to.equal(false);
+    });
+  });
+});
+
+describe('#26 UPDATE SALES SERVICES', () => {
+  describe('#saleUpdate', () => {
+    const productInvalid = [{ productId: 9999, quantity: 1 }];
+    const productValid = [{ productId: 1, quantity: 1 }];
+
+    afterEach(async () => {
+      sinon.restore();
+    });
+  
+    it('Retorna 404 quando o produto não existe', async () => {
+      sinon.stub(salesServices, 'checkProductExists').resolves(true);
+      sinon.stub(salesModels, 'checkProductExists').resolves([]);
+      const response = await salesServices.saleUpdate(productInvalid, 1);
+      expect(response).to.be.deep.equal({
+        code: 404,
+        message: { message: 'Product not found' },
+      });
+    });
+    
+    it('Retorna 404 quando a venda não existe', async () => {
+      sinon.stub(salesServices, 'checkProductExists').resolves(false);
+      sinon.stub(salesModels, 'checkProductExists').resolves([1]);
+      sinon.stub(salesModels, 'saleUpdate').resolves(false);
+
+      const response = await salesServices.saleUpdate(productInvalid, 1);
+      expect(response).to.be.deep.equal({
+        code: 404,
+        message: { message: 'Sale not found' },
+      });
+    });
+
+    it('Retorna 200 quando a venda é atualizada', async () => {
+      sinon.stub(salesServices, 'checkProductExists').resolves(false);
+      sinon.stub(salesModels, 'checkProductExists').resolves([1]);
+      sinon.stub(salesModels, 'saleUpdate').resolves([{
+        saleId: '1',
+        itemsUpdated: [{ productId: 1, quantity: 1 }]
+      }]);
+
+      const response = await salesServices.saleUpdate(productValid, 1);
+      expect(response).to.be.deep.equal({
+        code: 200,
+        message: [
+          {  
+            saleId: '1',
+            itemsUpdated: [{ productId: 1, quantity: 1 }]
+          },
+        ]
+      });
+    });
+  });
+});
+
+describe('#27 DELETE SALES SERVICES', () => {
+  describe('#deleteSale', () => {
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna false quando não existe a venda informada', async () => {
+      sinon.stub(salesModels, 'deleteSale').resolves([]);
+      const response = await salesServices.deleteSale(999);
+      expect(response).to.equal(false);
+    });
+
+    it('Retorna true quando a venda foi deletada corretamente', async () => {
+      sinon.stub(salesModels, 'deleteSale').resolves(1);
+      const response = await salesServices.deleteSale(1);
+      expect(response).to.equal(true);
     });
   });
 });

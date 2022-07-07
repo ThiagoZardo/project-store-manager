@@ -4,8 +4,8 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const productsModel = require('../../../models/productsModel');
 
-describe('#6 GET PRODUCTS MODELS', () => {
-  describe('#listProducts Models', () => {
+describe('#10 GET PRODUCTS MODELS', () => {
+  describe('#listProducts', () => {
     const productsModelMock = [
       {
         id: 1,
@@ -32,7 +32,7 @@ describe('#6 GET PRODUCTS MODELS', () => {
     });
   });
 
-  describe('#findById Models', () => {
+  describe('#findById', () => {
     const productsModelMock = [
       [
         {
@@ -62,8 +62,8 @@ describe('#6 GET PRODUCTS MODELS', () => {
   });
 });
 
-describe('#7 POST PRODUCTS MODELS', () => {
-  describe('#createProductModel Models', () => {
+describe('#11 POST PRODUCTS MODELS', () => {
+  describe('#createProductModel', () => {
     const newProduct = {
       name: 'Produto para testes'
     };
@@ -89,20 +89,58 @@ describe('#7 POST PRODUCTS MODELS', () => {
   });
 });
 
-describe('#8 UPDATE PRODUCTS MODELS', () => {
-  describe('#productUpdate Models', () => {
-    describe('#productUpdate', () => {
-      const newProduct = {
-        id: 1,
-        name: 'Machado do Thor Stormbreaker'
-      };
-      it('Retorna o número de linhas que foram atualizadas no banco', async () => {
-        sinon.stub(connection, 'execute').resolves([ResultSetHeader = {
-          affectedRows: 1,
-        }]);
-        const exist = await productsModel.productUpdate(newProduct)
-        expect(exist).to.be.equal(1);
-      });
+describe('#12 UPDATE PRODUCTS MODELS', () => {
+  describe('#productUpdate', () => {
+    const newProduct = {
+      id: 1,
+      name: 'Machado do Thor Stormbreaker'
+    };
+
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna o número de linhas que foram atualizadas no banco', async () => {
+      sinon.stub(connection, 'execute').resolves([ResultSetHeader = {
+        affectedRows: 1,
+      }]);
+      const exist = await productsModel.productUpdate(newProduct)
+      expect(exist).to.be.equal(1);
     });
-  })
+  });
+});
+
+describe('#13 DELETE PRODUCTS MODELS', () => {
+  describe('#deleteProduct', () => {
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna o número de linhas afetadas', async () => {
+      sinon.stub(connection, 'execute').resolves([
+        ResultSetHeader = {
+          affectedRows: 1,
+        }]
+      );
+      const response = await productsModel.deleteProduct(1);
+      expect(response).to.be.deep.equal(1);
+    });
+  });
+});
+
+describe('#14 GET/SEARCH PRODUCTS MODELS', () => {
+  describe('#searchProduct', () => {
+    const returnConnection = [{ id: 1, name: 'Martelo de Thor' }];
+    const param = 'Martelo';
+
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna o número de linhas afetadas', async () => {
+      sinon.stub(connection, 'execute').resolves([returnConnection]);
+      const response = await productsModel.searchProduct(param);
+      expect(response).to.be.deep.equal(returnConnection);
+    });
+  });
 });

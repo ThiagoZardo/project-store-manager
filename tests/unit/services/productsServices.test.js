@@ -4,8 +4,8 @@ const { expect } = require('chai');
 const productsService = require('../../../services/productsService');
 const productsModel = require('../../../models/productsModel');
 
-describe('#11 GET PRODUCTS SERVICES', () => {
-  describe('#listProducts Services', () => {
+describe('#19 GET PRODUCTS SERVICES', () => {
+  describe('#listProducts', () => {
     const productsModelMock = [
       {
         id: 1,
@@ -32,7 +32,7 @@ describe('#11 GET PRODUCTS SERVICES', () => {
     });
   });
 
-  describe('#findById Services', () => {
+  describe('#findById', () => {
     const productsModelMockFalse = false;
     const productsModelMock = [
       {
@@ -68,8 +68,8 @@ describe('#11 GET PRODUCTS SERVICES', () => {
   });
 });
 
-describe('#12 POST PRODUCTS SERVICES', () => {
-  describe('#createProductService Services', () => {
+describe('#20 POST PRODUCTS SERVICES', () => {
+  describe('#createProductService', () => {
     const newProduct = {
       name: 'Produto para testes'
     };
@@ -100,8 +100,8 @@ describe('#12 POST PRODUCTS SERVICES', () => {
   });
 });
 
-describe('#13 UPDATE PRODUCTS SERVICES', () => {
-  describe('#productUpdate Services', () => {
+describe('#21 UPDATE PRODUCTS SERVICES', () => {
+  describe('#productUpdate', () => {
     const name = 'Machado do Thor Stormbreaker';
     const obj = { id: 1, name: 'Machado do Thor Stormbreaker' }
 
@@ -122,5 +122,42 @@ describe('#13 UPDATE PRODUCTS SERVICES', () => {
       const response = await productsService.productUpdate(id, name);
       expect(response).to.be.deep.equal(obj);
     })
+  });
+});
+
+describe('#22 DELETE PRODUCTS SERVICES', () => {
+  describe('#deleteProduct', () => {
+    afterEach(async () => {
+      sinon.restore();
+    })
+
+    it('Retorna false quando não existe o produto informado', async () => {
+      sinon.stub(productsModel, 'deleteProduct').resolves([]);
+      const response = await productsService.deleteProduct(999);
+      expect(response).to.equal(false);
+    });
+
+    it('Retorna true quando o produto é deletado', async () => {
+      sinon.stub(productsModel, 'deleteProduct').resolves(1);
+      const response = await productsService.deleteProduct(1);
+      expect(response).to.equal(true);
+    });
+  });
+});
+
+describe('#23 GET/SEARCH PRODUCTS SERVICES', () => {
+  describe('#searchProduct', () => {
+    const param = 'Martelo';
+    const returnModel = [{ id: 1, name: 'Martelo de Thor' }];
+
+    afterEach(async () => {
+      sinon.restore();
+    });
+
+    it('Retorna o produto buscado', async () => {
+      sinon.stub(productsModel, 'searchProduct').resolves(returnModel);
+      const response = await productsService.searchProduct(param);
+      expect(response).to.be.deep.equal(returnModel);
+    });
   });
 });
